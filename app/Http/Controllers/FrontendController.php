@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\UserInterest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+class FrontendController extends Controller
+{
+    public function home()
+    {
+        return view('user.pages.home');
+    }
+
+
+    public function storeInterest(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'full_name' => 'required|string|max:255',
+                'email' => 'required|email|unique:user_interests',
+                'phone' => 'required|string|max:20',
+            ]);
+
+            UserInterest::create($validated);
+
+            return response()->json(['message' => 'Your interest submitted successfully!', 'status' => 'success'], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            Log::error('Error storing user interest: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while submitting your interest.'], 500);
+        }
+    }
+
+    public function showTraining()
+    {
+        return view('user.pages.training_show');
+    }
+}
