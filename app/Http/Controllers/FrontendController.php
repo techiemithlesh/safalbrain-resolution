@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use App\Models\UserInterest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -36,6 +37,7 @@ class FrontendController extends Controller
 
     public function showTraining()
     {
-        return view('user.pages.training_show');
+        $settings = Setting::first();
+        return view('user.pages.training_show', compact('settings'));
     }
 }

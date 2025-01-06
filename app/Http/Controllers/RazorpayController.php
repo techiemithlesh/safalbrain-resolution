@@ -37,69 +37,57 @@ class RazorpayController extends Controller
 
         try {
             $order = $this->razorpay->order->create([
-                'amount' => $price*100,
+                'amount' => $price * 100,
                 'currency' => 'INR',
                 'payment_capture' => 1
             ]);
-    
+
             return response()->json([
                 'status' => 'success',
                 'order_id' => $order->id,
                 'amount' => $request->amount
             ]);
-    
         } catch (Exception $e) {
-           
-            Log::error('Razorpay Order Creation Failed: ' . $e->getMessage()); 
-    
+
+            Log::error('Razorpay Order Creation Failed: ' . $e->getMessage());
+
             // Return an error response to the client
             return response()->json([
                 'message' => 'Order creation failed.',
                 'error' => $e->getMessage()
-            ], 500); 
+            ], 500);
         }
     }
 
     public function verifyPayment(Request $request)
     {
-        $success = false;
-        
+        Log::debug("Received request data in verifyPayment: ", $request->all());
+
         try {
             $attributes = [
                 'razorpay_payment_id' => $request->razorpay_payment_id,
                 'razorpay_order_id' => $request->razorpay_order_id,
                 'razorpay_signature' => $request->razorpay_signature
             ];
-            
+
             $this->razorpay->utility->verifyPaymentSignature($attributes);
 
-            $paymentData = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'city' => $request->city,
-                'price' => $request->amount,
-                'r_payment_id' => $request->razorpay_payment_id,
-                'r_order_id' => $request->razorpay_order_id,
-                'status' => 1,
-                'created_at' => now(),
-                'updated_at' => now()
-            ];
-    
-            // Insert payment data into the database
-            DB::table('payments')->insert($paymentData);
+            $order = $this->razorpay->order->fetch($request->razorpay_order_id);
 
-            $success = true;
+            return response()->json([
+                'success' => true,
+                'showModal' => true,
+                'message' => 'Payment successful!'
+            ]);
         } catch (\Exception $e) {
-            $success = false;
+            Log::error("Razorpay Payment Verification Failed: " . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'showModal' => false,
+                'message' => 'Payment verification failed'
+            ]);
         }
-
-        return response()->json([
-            'success' => $success
-        ]);
     }
 
-    public function storePaymentDetails(Request $request){
-        
-    }
+    public function storePaymentDetails(Request $request) {}
 }

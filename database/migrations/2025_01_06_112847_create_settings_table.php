@@ -19,13 +19,13 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('email_2')->nullable();
             $table->string('phone')->nullable();
-            $table->string('phone_2')->nullable();
-            $table->string('order_link')->nullable();
+            $table->longText('video_link')->nullable();
             $table->string('price')->nullable();
             $table->string('razor_pay_key')->nullable();
             $table->string('razor_pay_secret')->nullable();
             $table->string('whatsapp_link')->nullable();
             $table->string('webinar_link')->nullable();
+
             $table->timestamps();
         });
     }

@@ -88,48 +88,135 @@
         </div>
     </div>
 
-    {{-- Thank You Modal --}}
-
-    <div id="successModal" class="fixed inset-0 z-50 hidden">
-        <div class="fixed inset-0 bg-black bg-opacity-50"></div>
-        <div class="fixed inset-0 flex items-center justify-center p-4">
-            <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
-                <div class="text-center">
-                    <svg class="mx-auto h-16 w-16 text-green-500 mb-4" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Thank You for Your Payment!</h3>
-                    <p class="text-gray-600 mb-6">Your strategy call has been booked successfully. We'll be in touch shortly
-                        with next steps.</p>
-                    <button onclick="closeModal()"
-                        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                        Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
+    
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-    <script>
-        function closeModal() {
-            // console.log("Close");
-            document.getElementById('successModal').classList.add('hidden');
-        }
-
-        $(document).ready(function() {
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('mainVideo');
             const playButton = document.getElementById('playButton');
             const bookCallButton = document.getElementById('bookCallButton');
 
-            function showSuccessModal() {
-                document.getElementById('successModal').classList.remove('hidden');
+            if (!video || !playButton || !bookCallButton) {
+                console.error('Required elements not found');
+                return;
             }
 
-            showSuccessModal();
+            // Play button click handler
+            playButton.addEventListener('click', () => {
+                video.play().then(() => {
+                    playButton.style.display = 'none';
+                }).catch((error) => {
+                    console.error('Error playing video:', error);
+                    playButton.style.display = 'flex';
+                });
+            });
+
+            // Time update handler for showing the book call button
+            video.addEventListener('timeupdate', () => {
+                // Check if video has played for at least 30 seconds
+                if (video.currentTime >= 10) {
+                    bookCallButton.classList.remove('hidden');
+                    // Remove the listener after showing the button to prevent multiple calls
+                    video.removeEventListener('timeupdate', arguments.callee);
+                }
+            });
+
+            // Handle video completion
+            video.addEventListener('ended', () => {
+                playButton.style.display = 'flex';
+                bookCallButton.classList.remove('hidden');
+            });
+
+            // Optional: Add play/pause toggle on video click
+            video.addEventListener('click', () => {
+                if (video.paused) {
+                    video.play();
+                    playButton.style.display = 'none';
+                } else {
+                    video.pause();
+                    playButton.style.display = 'flex';
+                }
+            });
+        });
+
+        razorpayButton.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            
+            
+            fetch('http://localhost/landing1/create-razorpay-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        amount: 500,
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const options = {
+                        key: "{{ env('RAZORPAY_KEY') }}",
+                        amount: data.amount,
+                        currency: "INR",
+                        name: "Your Company Name",
+                        description: "Strategy Call Booking",
+                        order_id: data.order_id,
+                        handler: function(response) {
+                            
+                            fetch('http://localhost/landing1/verify-payment', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').content
+                                    },
+                                    body: JSON.stringify({
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        
+                                        window.location.href = '/payment-success';
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Payment verification failed:', error);
+                                    alert('Payment verification failed. Please contact support.');
+                                });
+                        },
+                        prefill: {
+                            name: "",
+                            email: "",
+                            contact: ""
+                        },
+                        theme: {
+                            color: "#3399cc"
+                        }
+                    };
+
+                    const rzp1 = new Razorpay(options);
+                    rzp1.open();
+                })
+                .catch(error => {
+                    console.error('Order creation failed:', error);
+                    alert('Unable to initiate payment. Please try again.');
+                });
+        });
+    </script> --}}
+
+    <script>
+        $(document).ready(function() {
+            const video = document.getElementById('mainVideo');
+            const playButton = document.getElementById('playButton');
+            const bookCallButton = document.getElementById('bookCallButton');
 
             if (!video || !playButton || !bookCallButton) {
                 console.error('Required elements not found');
@@ -170,7 +257,6 @@
                     playButton.style.display = 'flex';
                 }
             });
-
 
             // Book call button click handler
             bookCallButton.addEventListener('click', function(e) {
@@ -213,19 +299,15 @@
                                                 razorpay_order_id: response
                                                     .razorpay_order_id,
                                                 razorpay_signature: response
-                                                    .razorpay_signature,
-                                                name: 'User Name',
-                                                email: 'user@example.com',
-                                                phone: '1234567890'
+                                                    .razorpay_signature
                                             })
                                         })
                                         .then(response => response.json())
                                         .then(data => {
-                                            console.log("SUCCEJFJFJ", data);
-                                            if (data.success && data.showModal) {
-                                                showSuccessModal();
-                                            } else {
-                                                alert(data.message);
+                                            if (data.success) {
+
+                                                window.location.href =
+                                                    '/payment-success';
                                             }
                                         })
                                         .catch(error => {
@@ -234,7 +316,7 @@
                                                 error);
                                             alert(
                                                 'Payment verification failed. Please contact support.'
-                                            );
+                                                );
                                         });
                                 },
                                 prefill: {
