@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Razorpay\Api\Api;
 
@@ -19,11 +20,24 @@ class RazorpayController extends Controller
         );
     }
 
+    public function getPrice()
+    {
+        $priceObject = DB::table('settings')->select('price')->first();
+
+        if ($priceObject) {
+            return (int) $priceObject->price;
+        } else {
+            return 0;
+        }
+    }
+
     public function createOrder(Request $request)
     {
+        $price = $this->getPrice();
+
         try {
             $order = $this->razorpay->order->create([
-                'amount' => $request->amount,
+                'amount' => $price*100,
                 'currency' => 'INR',
                 'payment_capture' => 1
             ]);
@@ -58,6 +72,23 @@ class RazorpayController extends Controller
             ];
             
             $this->razorpay->utility->verifyPaymentSignature($attributes);
+
+            $paymentData = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'city' => $request->city,
+                'price' => $request->amount,
+                'r_payment_id' => $request->razorpay_payment_id,
+                'r_order_id' => $request->razorpay_order_id,
+                'status' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+    
+            // Insert payment data into the database
+            DB::table('payments')->insert($paymentData);
+
             $success = true;
         } catch (\Exception $e) {
             $success = false;
@@ -66,5 +97,9 @@ class RazorpayController extends Controller
         return response()->json([
             'success' => $success
         ]);
+    }
+
+    public function storePaymentDetails(Request $request){
+        
     }
 }
