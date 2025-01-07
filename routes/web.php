@@ -7,6 +7,8 @@ use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
+use function Pest\Laravel\get;
+
 Route::get('/', [FrontendController::class, 'home'])->name('home');
 Route::post('/register-interest', [FrontendController::class, 'storeInterest'])->name('interest.store');
 Route::get('/training', [FrontendController::class, 'showTraining'])->name('training.show');
@@ -22,9 +24,15 @@ Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard
 
 Route::prefix('dahboard')->group(function () {
     Route::get('/update-price', [AdminController::class, 'updatePrice'])->name('setprice');
+    Route::get('/enquiry-list', [AdminController::class, 'InitialFormInteres'])->name('enquiry.list');
+    Route::get('/enquiry-delete/{id}', [AdminController::class, 'deleteEnquiry'])->name('enquiry.delete');
 
     Route::get('/set/price', [SettingController::class, 'setPrice'])->name('setprice');
     Route::post('/update/price', [SettingController::class, 'updatePrice'])->name('updateprice');
+
+    // VIDEO UPLOAD
+    Route::get('/video-upload', [AdminController::class, 'videoUpload'])->name('video.upload.view');
+    Route::post('/admin/video-upload', [AdminController::class, 'videoUpload'])->name('video.upload');
 })->middleware('auth');
 
 Route::middleware('auth')->group(function () {

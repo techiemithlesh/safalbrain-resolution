@@ -37,8 +37,7 @@
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Payment List</a>
-                <a class="collapse-item" href="#">Enquiry List</a>
+                <a class="collapse-item" href="{{route('enquiry.list')}}">Enquiry List</a>
             </div>
         </div>
     </li>
@@ -60,6 +59,7 @@
         <div id="collapseSetting" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('setprice') }}">Update Price</a>
+                <a class="collapse-item" href="{{ route('video.upload.view') }}">Update Video</a>
 
             </div>
         </div>

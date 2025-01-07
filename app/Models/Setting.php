@@ -23,5 +23,6 @@ class Setting extends Model
         'razor_pay_secret',
         'whatsapp_link',
         'webinar_link',
+        'video_link'
     ];
 }
