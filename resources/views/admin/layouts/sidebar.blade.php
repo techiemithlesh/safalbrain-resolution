@@ -42,6 +42,28 @@
         </div>
     </li>
 
+     <!-- Divider -->
+     <hr class="sidebar-divider">
+
+     <!-- Heading -->
+     <div class="sidebar-heading">
+         Page Content
+     </div>
+ 
+     <li class="nav-item">
+         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePageSetting"
+             aria-expanded="true" aria-controls="collapseUtilities">
+             <i class="fas fa-fw fa-cog"></i> <span>Content Update</span>
+         </a>
+         <div id="collapsePageSetting" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 <a class="collapse-item" href="{{ route('admin.page-content.edit') }}">Home Page Content</a>
+                 <a class="collapse-item" href="{{ route('video.index') }}">Update Video</a>
+ 
+             </div>
+         </div>
+     </li>
+
 
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -59,7 +81,7 @@
         <div id="collapseSetting" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('setprice') }}">Update Price</a>
-                <a class="collapse-item" href="{{ route('video.upload.view') }}">Update Video</a>
+                <a class="collapse-item" href="{{ route('video.index') }}">Update Video</a>
 
             </div>
         </div>

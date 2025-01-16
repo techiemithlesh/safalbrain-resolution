@@ -7,17 +7,16 @@
     <!-- Title Section -->
     <div class="text-center max-w-4xl mx-auto mb-12">
         <h2 class="text-xl text-gray-700 mb-6">
-            If you're not a coach, course creator, content creator, consultant, agency owner, service Provider, freelancer,
-            digital marketer & digital Entrepreneur...
+            {{ $content->subtitle }}
         </h2>
         <p class="text-xl font-semibold text-gray-800 mb-8">
-            Then this training will not be valuable for you.
+            {{ $content->non_target_text }}
         </p>
         <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            How We Generated 173 Clients Last Month Totalling 1.98 Cr. in Sales Using The
+            {{ $content->main_title }}
         </h1>
         <p class="text-2xl md:text-3xl font-bold text-blue-600">
-            "Legacy Flywheel Matrix & Latest AI Technology"
+            "{{ $content->highlighted_text }}"
         </p>
     </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PageContent;
 use App\Models\Setting;
 use App\Models\UserInterest;
 use Illuminate\Http\Request;
@@ -11,7 +12,8 @@ class FrontendController extends Controller
 {
     public function home()
     {
-        return view('user.pages.home');
+        $content = PageContent::firstOrCreate(['page_name' => 'training']);
+        return view('user.pages.home', compact('content'));
     }
 
 

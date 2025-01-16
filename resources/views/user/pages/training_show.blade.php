@@ -30,7 +30,7 @@
             <div class="aspect-w-16 aspect-h-9 bg-gray-800 relative">
                 <!-- Custom Video Player -->
                 <video id="mainVideo" class="absolute inset-0 w-full h-full object-cover" preload="metadata">
-                    <source src="{{ asset('uploads/test.mp4') }}" type="video/mp4">
+                    <source src="{{ asset($settings->video_link ?? 'uploads/test.mp4') }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
 
@@ -129,7 +129,7 @@
                 document.getElementById('successModal').classList.remove('hidden');
             }
 
-            showSuccessModal();
+            // showSuccessModal();
 
             if (!video || !playButton || !bookCallButton) {
                 console.error('Required elements not found');

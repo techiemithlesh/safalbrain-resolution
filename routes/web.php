@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\PageContentController;
+use App\Http\Controllers\Admin\VideoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProfileController;
@@ -14,7 +16,6 @@ Route::post('/register-interest', [FrontendController::class, 'storeInterest'])-
 Route::get('/training', [FrontendController::class, 'showTraining'])->name('training.show');
 
 // RAZORPAY
-
 Route::post('/create-razorpay-order', [RazorpayController::class, 'createOrder'])->middleware('cors');
 Route::post('/verify-payment', [RazorpayController::class, 'verifyPayment'])->middleware('cors');
 
@@ -31,9 +32,15 @@ Route::prefix('dahboard')->group(function () {
     Route::post('/update/price', [SettingController::class, 'updatePrice'])->name('updateprice');
 
     // VIDEO UPLOAD
-    Route::get('/video-upload', [AdminController::class, 'videoUpload'])->name('video.upload.view');
-    Route::post('/admin/video-upload', [AdminController::class, 'videoUpload'])->name('video.upload');
+    Route::get('/video', [VideoController::class, 'index'])->name('video.index');
+    Route::post('/video/upload', [VideoController::class, 'uploadVideo'])->name('video.upload');
+
+    // PAGE CONTENT
+    Route::get('/admin/page-content/edit', [PageContentController::class, 'edit'])->name('admin.page-content.edit');
+    Route::put('/admin/page-content/update', [PageContentController::class, 'update'])->name('admin.page-content.update');
 })->middleware('auth');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

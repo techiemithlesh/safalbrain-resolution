@@ -16,13 +16,11 @@ class Setting extends Model
         'email',
         'email_2',
         'phone',
-        'phone_2',
-        'order_link',
+        'video_link',
         'price',
         'razor_pay_key',
         'razor_pay_secret',
         'whatsapp_link',
-        'webinar_link',
-        'video_link'
+        'webinar_link'
     ];
 }
