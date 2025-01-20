@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LandingPageContent;
 use App\Models\PageContent;
 use App\Models\Setting;
 use App\Models\UserInterest;
@@ -12,7 +13,7 @@ class FrontendController extends Controller
 {
     public function home()
     {
-        $content = PageContent::firstOrCreate(['page_name' => 'training']);
+        $content = PageContent::firstOrCreate(['page_name' => 'home']);
         return view('user.pages.home', compact('content'));
     }
 
@@ -40,6 +41,9 @@ class FrontendController extends Controller
     public function showTraining()
     {
         $settings = Setting::first();
-        return view('user.pages.training_show', compact('settings'));
+
+        $content = LandingPageContent::first();
+
+        return view('user.pages.training_show', compact('settings', 'content'));
     }
 }

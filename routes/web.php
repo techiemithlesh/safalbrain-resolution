@@ -38,6 +38,10 @@ Route::prefix('dahboard')->group(function () {
     // PAGE CONTENT
     Route::get('/admin/page-content/edit', [PageContentController::class, 'edit'])->name('admin.page-content.edit');
     Route::put('/admin/page-content/update', [PageContentController::class, 'update'])->name('admin.page-content.update');
+
+    // TRAINING PAGE CONTENT
+    Route::get('/admin/training-page/edit', [PageContentController::class, 'trainingPageEdit'])->name('admin.page-training-edit');
+    Route::put('/admin/training-page/update', [PageContentController::class, 'trainingPageUpdate'])->name('admin.page-training-update');
 })->middleware('auth');
 
 

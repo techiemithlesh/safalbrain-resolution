@@ -58,6 +58,7 @@
          <div id="collapsePageSetting" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
              <div class="bg-white py-2 collapse-inner rounded">
                  <a class="collapse-item" href="{{ route('admin.page-content.edit') }}">Home Page Content</a>
+                 <a class="collapse-item" href="{{ route('admin.page-training-edit') }}">Training Page Content</a>
                  <a class="collapse-item" href="{{ route('video.index') }}">Update Video</a>
  
              </div>

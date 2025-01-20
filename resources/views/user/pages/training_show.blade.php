@@ -16,10 +16,10 @@
         <!-- Title Section -->
         <div class="text-center mb-12">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                How We Generated 173 High-Ticket Clients Last Month Totalling ₹1,98,01,580 In Sales Using The
+                {{ $content->main_title }}
             </h1>
             <h2 class="text-2xl md:text-3xl text-blue-600 font-bold">
-                "Legacy Flywheel Matrix & Latest AI Technology"
+                {{ $content->subtitle }}
             </h2>
         </div>
 
@@ -48,7 +48,7 @@
             </div>
             <div id="bookCallButton" class="hidden p-4 text-center">
                 <button id="razorpayButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                    Book a Call Now
+                    {{ $content->book_call_button_text }}
                 </button>
             </div>
         </div>
@@ -57,33 +57,17 @@
         <div class="bg-white rounded-2xl shadow-xl p-8">
             <h3 class="text-2xl font-bold text-gray-900 mb-6">How to get started</h3>
             <div class="space-y-6">
-                <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span class="text-blue-600 font-semibold">1</span>
+                @foreach ($content->getFormattedSteps() as $step)
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold">{{ $step['number'] }}</span>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900">{{ $step['title'] }}</h4>
+                            <p class="text-gray-600">{{ $step['description'] }}</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="text-lg font-semibold text-gray-900">Watch the Complete Video</h4>
-                        <p class="text-gray-600">Learn about our proven methodology and success stories</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span class="text-blue-600 font-semibold">2</span>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold text-gray-900">Book a Strategy Call</h4>
-                        <p class="text-gray-600">Schedule a one-on-one session with our experts</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span class="text-blue-600 font-semibold">3</span>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold text-gray-900">Implement the Strategy</h4>
-                        <p class="text-gray-600">Follow our proven framework to scale your business</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
