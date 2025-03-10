@@ -208,6 +208,9 @@
                                             console.log("SUCCEJFJFJ", data);
                                             if (data.success && data.showModal) {
                                                 showSuccessModal();
+                                                setTimeout(() => {
+                                                    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSePKNTZPUuMOq6h7291xLtXxsUm00xKewW31HqoPU0V2pA6DQ/viewform"; // Redirect to Google Form
+                                                }, 3000);
                                             } else {
                                                 alert(data.message);
                                             }
