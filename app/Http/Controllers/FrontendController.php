@@ -29,7 +29,7 @@ class FrontendController extends Controller
         try {
             $validated = $request->validate([
                 'full_name' => 'required|string|max:255',
-                'email' => 'required|email|unique:user_interests',
+                'email' => 'required|email',
                 'phone' => 'required|string|max:20',
             ]);
 

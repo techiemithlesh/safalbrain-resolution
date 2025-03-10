@@ -60,7 +60,16 @@ class PageContentController extends Controller
                     [
                         'title' => 'Implement the Strategy',
                         'description' => 'Follow our proven framework to scale your business'
-                    ]
+                    ],
+                    [
+                        'title' => 'Timing',
+                        'description' => '9AM TO 10PM'
+                    ],
+
+                    [
+                        'title' => 'Seats Availability',
+                        'description' => 'Only 3 Seat Available'
+                    ],
                 ],
                 'book_call_button_text' => 'Book a Call Now',
             ]

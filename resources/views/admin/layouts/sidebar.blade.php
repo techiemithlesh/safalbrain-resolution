@@ -17,9 +17,7 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
-   
 
-    <!-- Nav Item - Utilities Collapse Menu -->
 
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -42,28 +40,30 @@
         </div>
     </li>
 
-     <!-- Divider -->
-     <hr class="sidebar-divider">
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
-     <!-- Heading -->
-     <div class="sidebar-heading">
-         Page Content
-     </div>
- 
-     <li class="nav-item">
-         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePageSetting"
-             aria-expanded="true" aria-controls="collapseUtilities">
-             <i class="fas fa-fw fa-cog"></i> <span>Content Update</span>
-         </a>
-         <div id="collapsePageSetting" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-             <div class="bg-white py-2 collapse-inner rounded">
-                 <a class="collapse-item" href="{{ route('admin.page-content.edit') }}">Home Page Content</a>
-                 <a class="collapse-item" href="{{ route('admin.page-training-edit') }}">Training Page Content</a>
-                 <a class="collapse-item" href="{{ route('video.index') }}">Update Video</a>
- 
-             </div>
-         </div>
-     </li>
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Page Content
+    </div>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePageSetting"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-cog"></i> <span>Content Update</span>
+        </a>
+        <div id="collapsePageSetting" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('admin.page-content.edit') }}">Home Page Content</a>
+                <a class="collapse-item" href="{{ route('admin.page-training-edit') }}">Training Page Content</a>
+                <a class="collapse-item" href="{{ route('video.index') }}">Update Video</a>
+                
+
+            </div>
+        </div>
+    </li>
 
 
     <!-- Divider -->
@@ -83,7 +83,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('setprice') }}">Update Price</a>
                 <a class="collapse-item" href="{{ route('video.index') }}">Update Video</a>
-
+                <a class="collapse-item" href="{{ route('logo.form') }}">Update Logo</a>
             </div>
         </div>
     </li>

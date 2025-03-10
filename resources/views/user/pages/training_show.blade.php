@@ -104,7 +104,7 @@
             document.getElementById('successModal').classList.add('hidden');
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             const video = document.getElementById('mainVideo');
             const playButton = document.getElementById('playButton');
             const bookCallButton = document.getElementById('bookCallButton');
@@ -157,7 +157,7 @@
 
 
             // Book call button click handler
-            bookCallButton.addEventListener('click', function(e) {
+            bookCallButton.addEventListener('click', function (e) {
                 e.preventDefault();
 
                 $.ajax({
@@ -170,7 +170,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success: function(response) {
+                    success: function (response) {
                         console.log("data", response);
                         if (response.status === 'success') {
                             const options = {
@@ -180,29 +180,29 @@
                                 name: "safalbrain",
                                 description: "Strategy Call Booking",
                                 order_id: response.order_id,
-                                handler: function(response) {
+                                handler: function (response) {
 
                                     fetch('/verify-payment', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': document
-                                                    .querySelector(
-                                                        'meta[name="csrf-token"]')
-                                                    .content
-                                            },
-                                            body: JSON.stringify({
-                                                razorpay_payment_id: response
-                                                    .razorpay_payment_id,
-                                                razorpay_order_id: response
-                                                    .razorpay_order_id,
-                                                razorpay_signature: response
-                                                    .razorpay_signature,
-                                                name: 'User Name',
-                                                email: 'user@example.com',
-                                                phone: '1234567890'
-                                            })
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': document
+                                                .querySelector(
+                                                    'meta[name="csrf-token"]')
+                                                .content
+                                        },
+                                        body: JSON.stringify({
+                                            razorpay_payment_id: response
+                                                .razorpay_payment_id,
+                                            razorpay_order_id: response
+                                                .razorpay_order_id,
+                                            razorpay_signature: response
+                                                .razorpay_signature,
+                                            name: 'User Name',
+                                            email: 'user@example.com',
+                                            phone: '1234567890'
                                         })
+                                    })
                                         .then(response => response.json())
                                         .then(data => {
                                             console.log("SUCCEJFJFJ", data);
@@ -239,7 +239,7 @@
                             );
                         }
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.error('Order creation failed:', error);
                         alert('Unable to initiate payment. Please try again.');
                     }

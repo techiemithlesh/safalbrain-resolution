@@ -42,6 +42,12 @@ Route::prefix('dahboard')->group(function () {
     // TRAINING PAGE CONTENT
     Route::get('/admin/training-page/edit', [PageContentController::class, 'trainingPageEdit'])->name('admin.page-training-edit');
     Route::put('/admin/training-page/update', [PageContentController::class, 'trainingPageUpdate'])->name('admin.page-training-update');
+
+
+    // SETTING(LOGO)
+    Route::get('/admin/logo', [SettingController::class, 'showLogoForm'])->name('logo.form');
+    Route::post('/admin/logo/update', [SettingController::class, 'updateLogo'])->name('update.logo');
+
 })->middleware('auth');
 
 
