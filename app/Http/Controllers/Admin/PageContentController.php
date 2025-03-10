@@ -33,7 +33,7 @@ class PageContentController extends Controller
             'highlighted_text' => 'required|string',
         ]);
 
-        $content = PageContent::firstOrCreate(['page_name' => 'training']);
+        $content = PageContent::firstOrCreate(['page_name' => 'home']);
         $content->update($request->all());
 
         return redirect()->back()->with('success', 'Content updated successfully!');

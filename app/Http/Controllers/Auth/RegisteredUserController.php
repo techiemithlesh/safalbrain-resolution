@@ -12,13 +12,18 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
+
+
 class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
+        if (User::count() > 0) {
+            return redirect()->route('login')->with('error', 'Admin already exists. Please login.');
+        }
         return view('auth.register');
     }
 
@@ -29,13 +34,18 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        if (User::count() > 0) {
+            return redirect()->route('login')->with('error', 'Admin already exists. Please login.');
+        }
+
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
+        $user = User::firstOrCreate([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),

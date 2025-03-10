@@ -13,7 +13,13 @@ class FrontendController extends Controller
 {
     public function home()
     {
-        $content = PageContent::firstOrCreate(['page_name' => 'home']);
+        // $content = PageContent::where('page_name', 'home')->get();
+        $content = PageContent::where('page_name', 'home')->first();
+        // return $content;
+        // if (!$content) {
+        //     abort(404, 'Page content not found');
+        // }
+
         return view('user.pages.home', compact('content'));
     }
 

@@ -24,15 +24,15 @@
     <div class="max-w-xl mx-auto">
         <form class="space-y-6" id="interestForm">
             <div>
-                <input type="text" placeholder="Name" name="full_name"
+                <input type="text" placeholder="Name" name="full_name" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
             </div>
             <div>
-                <input type="email" placeholder="Email Address" name="email"
+                <input type="email" placeholder="Email Address" name="email" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
             </div>
             <div>
-                <input type="tel" placeholder="Phone" name="phone"
+                <input type="tel" placeholder="Phone" name="phone"required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
             </div>
             <button type="submit" id="submitButton"
@@ -43,85 +43,102 @@
     </div>
 
     <script>
-        $(document).ready(function() {
-            $('#interestForm').on('submit', function(e) {
-                e.preventDefault();
+    $(document).ready(function() {
+        $('#interestForm').on('submit', function(e) {
+            e.preventDefault();
 
-                const $form = $(this);
-                const $submitButton = $('#submitButton');
+            const $form = $(this);
+            const $submitButton = $('#submitButton');
+            const fullName = $('input[name="full_name"]').val().trim();
+            const email = $('input[name="email"]').val().trim();
+            const phone = $('input[name="phone"]').val().trim();
 
-                // Disable submit button
-                $submitButton.prop('disabled', true)
-                    .text('Processing...');
+            // Regular Expressions for Validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const phonePattern = /^[6-9]\d{9}$/; // Indian mobile number format
+            let errors = [];
 
-                $.ajax({
-                    url: '/register-interest',
-                    method: 'POST',
-                    data: $form.serialize(),
-                    dataType: 'json',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success!',
-                                text: response.message
-                            }).then(() => {
-                                setTimeout(() => {
-                                    window.location.href = "{{ route('training.show') }}";
-                                }, 30); 
-                            });
-                        } else {
-                            let errorMessage = '';
-                            if (response.errors) {
-                                for (const field in response.errors) {
-                                    response.errors[field].forEach(error => {
-                                        errorMessage += `${field}: ${error}\n`;
-                                    });
-                                }
-                            } else {
-                                errorMessage =
-                                    'An error occurred while submitting your interest.';
-                            }
+            // Validate Name
+            if (fullName.length < 3) {
+                errors.push("Name must be at least 3 characters long.");
+            }
 
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: errorMessage
-                            });
-                        }
-                        $submitButton.prop('disabled', false)
-                            .text('Register For The Training Now');
-                    },
-                    error: function(xhr) {
+            // Validate Email ONLY if entered
+            if (email.length > 0 && !emailPattern.test(email)) {
+                errors.push("Please enter a valid email address.");
+            }
 
-                        if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
-                            let errorMessage = '';
+            // Validate Phone (Mandatory)
+            if (!phonePattern.test(phone)) {
+                errors.push("Please enter a valid 10-digit mobile number.");
+            }
 
-                            $.each(errors, function(key, value) {
-                                errorMessage += value[0] + '\n';
-                            });
-
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: errorMessage
-                            });
-                        } else {
-
-                            alert('An error occurred while submitting your interest.');
-                        }
-                    },
-                    complete: function() {
-
-                        $submitButton.prop('disabled', false)
-                            .text('Register For The Training Now');
-                    }
+            if (errors.length > 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: errors.join("\n")
                 });
+                return;
+            }
+
+            // Disable submit button
+            $submitButton.prop('disabled', true).text('Processing...');
+
+            $.ajax({
+                url: '/register-interest',
+                method: 'POST',
+                data: $form.serialize(),
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: response.message
+                        }).then(() => {
+                            setTimeout(() => {
+                                window.location.href = "{{ route('training.show') }}";
+                            }, 30);
+                        });
+                    } else {
+                        let errorMessage = response.message || 'An error occurred.';
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: errorMessage
+                        });
+                    }
+                    $submitButton.prop('disabled', false).text('Register For The Training Now');
+                },
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        let errorMessage = '';
+
+                        $.each(errors, function(key, value) {
+                            errorMessage += value[0] + '\n';
+                        });
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: errorMessage
+                        });
+                    } else {
+                        alert('An error occurred while submitting your interest.');
+                    }
+                },
+                complete: function() {
+                    $submitButton.prop('disabled', false).text('Register For The Training Now');
+                }
             });
         });
-    </script>
+    });
+</script>
+
+
 @endsection
